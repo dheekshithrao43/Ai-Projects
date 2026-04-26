@@ -1,0 +1,2 @@
+precision_macro,recall_macro,f1_macro,precision_weighted,recall_weighted,f1_weighted,n_samples
+0.8911,0.871,0.8624,0.9201,0.89,0.8909,300

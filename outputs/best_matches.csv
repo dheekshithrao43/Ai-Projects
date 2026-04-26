@@ -1,0 +1,5 @@
+candidate,job_title,role,hybrid_score,fit_label,top_gap_summary
+Alice – Python Backend,Software Engineer,Backend Developer,0.5836,Potential Fit,2/7 skills matched | 0 partial | 5 missing | Fit score: 29%
+Bob – ML Engineer,Data Scientist,Machine Learning Engineer,0.7467,Good Fit,3/3 skills matched | 0 partial | 0 missing | Fit score: 100%
+Carol – Frontend Dev,Web Designer,Frontend Web Designer,0.7137,Good Fit,3/3 skills matched | 0 partial | 0 missing | Fit score: 100%
+Dave – DevOps/SRE,Systems Engineer,Cloud Systems Engineer,0.6034,Potential Fit,1/3 skills matched | 0 partial | 2 missing | Fit score: 33%
