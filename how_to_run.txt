@@ -1,0 +1,86 @@
+AI Career Recommendation System — How to Run
+=============================================
+
+PREREQUISITES
+-------------
+- Python 3.13 (venv already configured)
+- Kaggle account with API token (for dataset download)
+- ~4 GB free disk space (datasets + model files)
+
+
+1. ACTIVATE THE VIRTUAL ENVIRONMENT
+------------------------------------
+    source .venv/bin/activate
+
+
+2. INSTALL DEPENDENCIES
+------------------------
+    pip install -r requirements.txt
+
+    Also download the spaCy language model:
+        python -m spacy download en_core_web_sm
+
+
+3. SET UP KAGGLE CREDENTIALS (one-time)
+----------------------------------------
+    1. Go to kaggle.com > Account > Create New API Token
+    2. Save the downloaded kaggle.json to ~/.kaggle/kaggle.json
+    3. chmod 600 ~/.kaggle/kaggle.json
+
+
+4. DOWNLOAD DATASETS
+---------------------
+    python download_datasets.py
+
+    Downloads to data/raw/:
+        resumes/            2,484 resumes with role labels  (Kaggle)
+        job_descriptions/   Job descriptions + skills       (Kaggle)
+        ner_annotations/    220 annotated resumes for NER   (Kaggle)
+        matching_labels/    8,000 CV-job pairs + labels     (HuggingFace)
+        score_details/      1,031 GPT-4o scored pairs       (HuggingFace)
+        onet_taxonomy/      O*NET 23.1 skills taxonomy       (direct download)
+
+
+5. TRAIN MODELS
+----------------
+    python train.py
+
+    This runs three phases:
+        Phase 1 — Data exploration: generates 10 HTML charts in outputs/training/
+        Phase 2 — Model fitting:    fits TF-IDF, BM25, and SBERT on the job corpus
+        Phase 3 — Evaluation:       scores 300 test samples; generates 8 performance charts
+
+    Trained models are saved to models/hybrid_matcher/:
+        classical.joblib    TF-IDF vectoriser + BM25 index + corpus
+        transformer.joblib  SBERT corpus embeddings (model weights stay in HF cache)
+        config.joblib       Matcher weights and hyperparameters
+
+    Runtime: ~5-15 min depending on hardware (SBERT encoding is the slow step).
+
+
+6. GENERATE REPORT PLOTS (PNG)
+-------------------------------
+    python generate_report_plots.py
+
+    Produces 10 publication-ready PNG charts in outputs/report_plots/.
+
+
+7. INFERENCE (running predictions after training)
+--------------------------------------------------
+    Prerequisites: train.py must have been run at least once so that
+    models/hybrid_matcher/ exists on disk.
+
+    The trained model is loaded from disk in seconds — no re-fitting needed.
+
+
+    streamlit run app/streamlit_app.py
+
+
+TYPICAL FIRST-RUN ORDER
+------------------------
+    source .venv/bin/activate
+    pip install -r requirements.txt
+    python -m spacy download en_core_web_sm
+    python download_datasets.py      # ~20 min, needs Kaggle token
+    python train.py                  # ~10 min, saves models to models/
+    python main.py app               # launch the web app
